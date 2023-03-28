@@ -1,31 +1,38 @@
-// PARTIE WORKS
+
+document.addEventListener("DOMContentLoaded", function () {
+  getWorks()
+  getCategories()
+});
 
 
+function getWorks() {
+  fetch('http://localhost:5678/api/works')
+    .then(response => response.json())
+    .then((works) => {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      works.forEach((work) => {
+        const figure = document.createElement('figure');
+        const img = document.createElement('img');
+        const figcaption = document.createElement('figcaption');
+  
+        img.src = work.imageUrl;
+        img.alt = work.title;
+        // img.setAttribute('data-category', 0)
+        figcaption.innerText = work.title;
+  
+        figure.appendChild(img);
+        figure.appendChild(figcaption);
+  
+        // ajouter l'élément à la galerie
+        document.querySelector('.gallery').appendChild(figure);
+        
+      });
+    })
+    .catch(error => console.error(error));
+  }
 
 // PARTIE CATEGORIES
 
-getCategories()
 
 function getCategories() {
   fetch('http://localhost:5678/api/categories')
@@ -47,12 +54,15 @@ function getCategories() {
         const btn = document.createElement("button");
         btn.innerHTML = category.name;
         btn.setAttribute('data-category', category.id),
-        btn.name = category.name;
+          btn.name = category.name;
         divCategory.appendChild(btn);
       });
       setUpSorting()
     });
 }
+
+// Fonction de tri
+
 function setUpSorting() {
   // Récupérer tous les boutons de catégorie
   const categoryButtons = document.querySelectorAll('.category-buttons button');
