@@ -145,13 +145,27 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 70px 0
 }
 
 section {
 	margin: 50px 0
 }
 
+.edit-border {
+	box-sizing: border-box;
+	position: absolute;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	min-width: 1440px;
+	height: 60px;
+	background-color: #000000;
+}
+.hidden {
+	display: none; /* propriété pour rendre l'élément invisible */
+}
 h1 {
 	display: flex;
 	flex-direction: column;
@@ -161,7 +175,7 @@ h1 {
 	color: #B1663C
 }
 
-h1>span {
+h1 > span {
 	font-family: 'Work Sans';
 	font-size: 10px;
 	letter-spacing: 0.1em;
@@ -179,16 +193,22 @@ nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
+	text-decoration: none;
 
+}
+ul a {
+	text-decoration: none;
 }
 
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	text-decoration: none;
 }
 
 li:hover {
 	color: #B1663C;
+	text-decoration: none;
 }
 
 #introduction {
