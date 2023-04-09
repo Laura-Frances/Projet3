@@ -145,7 +145,8 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 70px 0
+	margin: 40px 0;
+	padding-top: 40px;
 }
 
 section {
@@ -154,32 +155,73 @@ section {
 
 .edit-border {
 	box-sizing: border-box;
+	display:flex;
 	position: absolute;
-	left:0;
-	right:0;
-	top:0;
-	bottom:0;
-	min-width: 1440px;
+	justify-content: center ;
+	left: 0;
+	right: 0;
+	top: 0;
+	width: 100%;
 	height: 60px;
-	background-color: #000000;
+	background-color: black;
 }
+
+#icon-border {
+	color: white;
+	position: absolute;
+	left: 37.29%;
+	right: 61.39%;
+	top: 33.9%;
+	bottom: 33.95%;
+	width: 19px;
+}
+
+.edition {
+	color: white;
+	position: absolute;
+	font-family: 'Work Sans';
+	left: 38.24%;
+	top: 33.9%;
+}
+
+.button-changes {
+	position: absolute;
+	text-align: center;
+	height: 38px;
+	left: 43%;
+	background: #FFFFFF;
+	border-radius: 60px;
+	padding: 0 20px;
+}
+
+.publish {
+	font-family: 'Work Sans';
+	font-weight: 500;
+	text-align: center;
+	font-size: 14px;
+	color: #000000;
+
+}
+
 .hidden {
-	display: none; /* propriété pour rendre l'élément invisible */
+	display: none;
+	/* propriété pour rendre l'élément invisible */
 }
+
 h1 {
 	display: flex;
 	flex-direction: column;
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
+
 }
 
-h1 > span {
+h1>span {
 	font-family: 'Work Sans';
 	font-size: 10px;
 	letter-spacing: 0.1em;
-
 }
 
 h2 {
@@ -194,8 +236,8 @@ nav ul {
 	align-items: center;
 	list-style-type: none;
 	text-decoration: none;
-
 }
+
 ul a {
 	text-decoration: none;
 }
@@ -238,9 +280,36 @@ li:hover {
 	margin-bottom: 0.5em;
 }
 
+.icon-intro-box {
+	display: flex;
+	margin: 15px 55px;
+}
+
+#icon-intro {
+	margin-right: 5px;
+}
+
+#portfolio {
+	text-align: center;
+
+}
 #portfolio h2 {
+	display: inline-block;
 	text-align: center;
 	margin-bottom: 1em;
+}
+
+.icon-projects-box {
+	display: inline-block;
+}
+
+#icon-projects {
+	display: inline-block;
+	margin-left:30px;
+}
+.text-modify {
+	display: inline-block;
+	margin-left: 5px;
 }
 
 .gallery {
@@ -268,7 +337,6 @@ button {
 	background-color: #FFFEF8;
 	color: #1D6154;
 	margin: 10px;
-	/* width: 100px; */
 	height: 40px;
 	font-family: 'Syne';
 	font-style: normal;
@@ -281,6 +349,7 @@ button:hover {
 	background-color: #1D6154;
 	color: #FFFEF8;
 }
+
 /* END OF SORT */
 
 .gallery img {
