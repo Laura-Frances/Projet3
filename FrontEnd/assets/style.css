@@ -155,9 +155,9 @@ section {
 
 .edit-border {
 	box-sizing: border-box;
-	display:flex;
+	display: flex;
 	position: absolute;
-	justify-content: center ;
+	justify-content: center;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -169,10 +169,8 @@ section {
 #icon-border {
 	color: white;
 	position: absolute;
-	left: 37.29%;
-	right: 61.39%;
-	top: 33.9%;
-	bottom: 33.95%;
+	left: 38%;
+	top: 34%;
 	width: 19px;
 }
 
@@ -180,18 +178,23 @@ section {
 	color: white;
 	position: absolute;
 	font-family: 'Work Sans';
-	left: 38.24%;
-	top: 33.9%;
+	left: 39%;
+	top: 34%;
 }
 
 .button-changes {
 	position: absolute;
 	text-align: center;
 	height: 38px;
-	left: 43%;
 	background: #FFFFFF;
 	border-radius: 60px;
 	padding: 0 20px;
+}
+
+.button-changes:hover {
+	background-color: #FFFFFF;
+	border: 1px solid black;
+	cursor: pointer;
 }
 
 .publish {
@@ -200,12 +203,6 @@ section {
 	text-align: center;
 	font-size: 14px;
 	color: #000000;
-
-}
-
-.hidden {
-	display: none;
-	/* propriété pour rendre l'élément invisible */
 }
 
 h1 {
@@ -215,7 +212,6 @@ h1 {
 	font-size: 22px;
 	font-weight: 800;
 	color: #B1663C;
-
 }
 
 h1>span {
@@ -228,7 +224,8 @@ h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
-	color: #1D6154
+	color: #1D6154;
+	margin-top: 20px;
 }
 
 nav ul {
@@ -236,6 +233,7 @@ nav ul {
 	align-items: center;
 	list-style-type: none;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 ul a {
@@ -285,14 +283,10 @@ li:hover {
 	margin: 15px 55px;
 }
 
-#icon-intro {
-	margin-right: 5px;
-}
-
 #portfolio {
 	text-align: center;
-
 }
+
 #portfolio h2 {
 	display: inline-block;
 	text-align: center;
@@ -301,15 +295,20 @@ li:hover {
 
 .icon-projects-box {
 	display: inline-block;
+
 }
 
 #icon-projects {
 	display: inline-block;
-	margin-left:30px;
+	margin-left: 30px;
+
 }
-.text-modify {
+
+.modal,
+.modal-open {
+	color: black;
 	display: inline-block;
-	margin-left: 5px;
+	text-decoration: none;
 }
 
 .gallery {
@@ -320,7 +319,49 @@ li:hover {
 	grid-row-gap: 20px;
 }
 
-/* SORT */
+/* MODALE GALLERY */
+
+
+#modal2 {
+	display:none;
+	position: fixed;
+	align-items: center;
+	justify-content: center;
+	width: 630px;
+	transform: translate(-50%, -50%);
+	height: 730px;
+	border-radius: 10px;
+	background: #B1663C;
+	Left: 50%;
+	top: 50%;
+}
+
+.modal-wrapper {
+	background: peachpuff;
+	border-radius: 10px;
+	width: 100%;
+	height: 90%;
+}
+
+.modal-close {
+	position: absolute;
+	cursor: pointer;
+	top: 10px;
+	right: 10px;
+	transform: translate(50%, -50%);
+	margin: 30px;
+}
+
+.modal-title {
+	font-family: 'Work Sans';
+	color: #000000;
+	font-weight: 400;
+	font-size: 26px;
+	margin-top: 0px;
+}
+
+
+/* SORTING */
 
 #category-buttons {
 	display: flex;
@@ -348,6 +389,11 @@ button {
 button:hover {
 	background-color: #1D6154;
 	color: #FFFEF8;
+}
+
+.hidden {
+	display: none;
+	/* propriété pour rendre l'élément invisible */
 }
 
 /* END OF SORT */

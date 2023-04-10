@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   getWorks();
 });
 
-// **********PARTIE WORKS**********
+//***************************PARTIE WORKS***************************//
 
 // Récupération des works via l'API
 function getWorks() {
@@ -33,7 +33,7 @@ function getWorks() {
     })
 }
 
-//**********PARTIE CATEGORIES**********
+//***************************PARTIE CATEGORIES***************************//
 
 // Récupération des catégories via l'API
 function getCategories() {
@@ -41,7 +41,7 @@ function getCategories() {
     .then(response => response.json())
     .then((categories) => {
 
-      const divCategory = document.querySelector("#category-buttons"); // on récupére la div des boutons pour le tri par catégorie
+      const divCategory = document.querySelector(".category-buttons"); // on récupére la div des boutons pour le tri par catégorie
       const btnAll = document.createElement("button");  // on créé la variable pour le bouton ''Tous''
 
       btnAll.innerHTML = "Tous"; // on créé le texte du bouton "Tous"
@@ -62,11 +62,11 @@ function getCategories() {
     });
 }
 
-//**********FONCTION DE TRI**********
+//***************************FONCTION DE TRI***************************//
 
 function setUpSorting() {
 
-  const categoryButtons = document.querySelectorAll('#category-buttons button');   // on récupère les boutons de la "category-buttons"
+  const categoryButtons = document.querySelectorAll('.category-buttons button');   // on récupère les boutons de la "category-buttons"
 
   categoryButtons.forEach(button => { // pour chaque bouton...
     button.addEventListener('click', () => { //on ajoute un événement de clic...
@@ -94,48 +94,8 @@ function filterImages(categoryId) {
   });
 }
 
-//**********AUTHENTIFICATION DE l'UTILISATEUR AVEC TOKEN**********
 
-let myToken = null; // définie avec une valeur par défaut
-
-//événement DOM pour vérifier si l'utilisateur est connecté ou non
-
-document.addEventListener(
-  "DOMContentLoaded", // DOMContentLoaded déclenché lorsque page html chargée
-  function() 
-  { 
-    const loginButton = document.getElementById('loginButton');
-    getToken();
-
-    if (myToken != null) { // si le token se trouve dans le localstorage, alors nous sommes connectés, logout apparait
-      loginButton.textContent = 'logout';
-      document
-        .querySelectorAll('.hidden')
-        .forEach
-        (
-          element => 
-          { // apparition de chaque élément invisible d'édition lors du login
-            element.classList.remove('hidden');
-          }
-        )
-    } else { // si le token ne se trouve pas dans le locastorage, alors nous ne sommes pas connectés
-      loginButton.textContent = 'login';
-    }
-
-    // événement click ajouté au bouton pour gérer la connexion/déconnexion de l'user
-    loginButton.addEventListener('click', () => {
-      if (myToken) {
-        localStorage.removeItem('token');
-        loginButton.textContent = 'login';
-        window.location.href = "http://127.0.0.1:5500/index.html"
-      } else {
-        loginButton.textContent = 'logout';
-        window.location.replace("http://127.0.0.1:5500/login.html")
-
-      }
-    });
-  }
-);
+//***************************INTERFACE LOGIN/LOGOUT***************************//
 
 // on stock le token dans le localStorage
 function getToken() {
@@ -143,6 +103,95 @@ function getToken() {
   console.log(myToken)
 }
 
+let myToken = null; // définie avec une valeur par défaut
+
+document.addEventListener
+(
+  "DOMContentLoaded", // DOMContentLoaded déclenché lorsque page html chargée
+  function () 
+  {
+    const loginButton = document.getElementById('loginButton');
+    getToken();
+
+    if (myToken != null) 
+    { // si le token se trouve dans le localstorage (n'est pas null), alors nous sommes connectés, logout apparait
+      loginButton.textContent = 'logout';
+      document
+        .querySelectorAll('.hidden') // on sélectionne la classe hidden
+        .forEach
+        (
+          element => // pour chaque élément on enlève l'élément hidden
+          {
+            element.classList.remove('hidden');
+          }
+        )
+        document.querySelector('.category-buttons').classList.add('hidden');
+    } 
+    else 
+    { // autrement les éléments restent en hidden et le 'login' s'affiche
+      loginButton.textContent = 'login';
+      document
+        .querySelectorAll('.hidden')
+        .forEach
+        (
+          element => 
+          {
+            element.classList.add('hidden');
+          }
+        )
+        document.querySelector('.category-buttons').classList.remove('hidden');
+    }
+
+    // événement click ajouté au bouton pour gérer la connexion/déconnexion de l'user
+    loginButton.addEventListener('click', () => 
+    {
+      if (myToken) 
+      {
+        localStorage
+        .removeItem('token');
+        loginButton.textContent = 'login';
+        window.location.href = "http://127.0.0.1:5500/index.html"
+      } 
+      else 
+      {
+        loginButton.textContent = 'logout';
+        window.location.replace("http://127.0.0.1:5500/login.html")
+      }
+    });
+  }
+);
+
+//***************************AJOUT DE LA MODALE***************************//
+
+// on récupère les éléments <a>, X et modale //
+
+document.addEventListener('DOMContentLoaded', function() {
+const modalOpen = document.querySelector('.modal-open');
+const modalClose = document.querySelector('.modal-close');
+const modal = document.querySelector('#modal2');
+
+// empêche la propagation de l'événement de clic
+modal.onclick = function(event) {
+  event.stopPropagation(); 
+}
+
+// Add event onClick to open the modal //
+modalOpen.onclick = function() {
+modal.setAttribute('aria-hidden', 'false');
+modal.style.display ='flex'; // afficher la modale
+}
+
+
+// Add event onClick to close the modal 
+modalClose.onclick = function() {
+  modal.setAttribute('aria-hidden', 'true'); // Masquer la modale
+  modal.style.display = 'none'; // Masquer la modale en utilisant CSS
+}
+
+});
+
+
+// récupérer à nouveau les works via l'API //
 
 
 

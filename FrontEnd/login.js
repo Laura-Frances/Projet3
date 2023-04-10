@@ -1,4 +1,4 @@
-// CODE JS POUR LA CONNEXION DE L'UTILISATEUR //
+// PAGE DE CONNEXION DE L'UTILISATEUR AVEC TOKEN//
 
 const apiUrl = 'http://localhost:5678/api/users/login';
 const loginForm = document.querySelector('#login-form');
