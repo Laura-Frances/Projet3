@@ -106,92 +106,118 @@ function getToken() {
 let myToken = null; // définie avec une valeur par défaut
 
 document.addEventListener
-(
-  "DOMContentLoaded", // DOMContentLoaded déclenché lorsque page html chargée
-  function () 
-  {
-    const loginButton = document.getElementById('loginButton');
-    getToken();
+  (
+    "DOMContentLoaded", // DOMContentLoaded déclenché lorsque page html chargée
+    function () {
+      const loginButton = document.getElementById('loginButton');
+      getToken();
 
-    if (myToken != null) 
-    { // si le token se trouve dans le localstorage (n'est pas null), alors nous sommes connectés, logout apparait
-      loginButton.textContent = 'logout';
-      document
-        .querySelectorAll('.hidden') // on sélectionne la classe hidden
-        .forEach
-        (
-          element => // pour chaque élément on enlève l'élément hidden
-          {
-            element.classList.remove('hidden');
-          }
-        )
-        document.querySelector('.category-buttons').classList.add('hidden');
-    } 
-    else 
-    { // autrement les éléments restent en hidden et le 'login' s'affiche
-      loginButton.textContent = 'login';
-      document
-        .querySelectorAll('.hidden')
-        .forEach
-        (
-          element => 
-          {
-            element.classList.add('hidden');
-          }
-        )
-        document.querySelector('.category-buttons').classList.remove('hidden');
-    }
-
-    // événement click ajouté au bouton pour gérer la connexion/déconnexion de l'user
-    loginButton.addEventListener('click', () => 
-    {
-      if (myToken) 
-      {
-        localStorage
-        .removeItem('token');
-        loginButton.textContent = 'login';
-        window.location.href = "http://127.0.0.1:5500/index.html"
-      } 
-      else 
-      {
+      if (myToken != null) { // si le token se trouve dans le localstorage (n'est pas null), alors nous sommes connectés, logout apparait
         loginButton.textContent = 'logout';
-        window.location.replace("http://127.0.0.1:5500/login.html")
+        document
+          .querySelectorAll('.hidden') // on sélectionne la classe hidden
+          .forEach
+          (
+            element => // pour chaque élément on enlève l'élément hidden
+            {
+              element.classList.remove('hidden');
+            }
+          )
+        document.querySelector('.category-buttons').classList.add('hidden');
       }
-    });
-  }
-);
+      else { // autrement les éléments restent en hidden et le 'login' s'affiche
+        loginButton.textContent = 'login';
+        document
+          .querySelectorAll('.hidden')
+          .forEach
+          (
+            element => {
+              element.classList.add('hidden');
+            }
+          )
+        document.querySelector('.category-buttons').classList.remove('hidden');
+      }
+
+      // événement click ajouté au bouton pour gérer la connexion/déconnexion de l'user
+      loginButton.addEventListener('click', () => {
+        if (myToken) {
+          localStorage
+            .removeItem('token');
+          loginButton.textContent = 'login';
+          window.location.href = "http://127.0.0.1:5500/index.html"
+        }
+        else {
+          loginButton.textContent = 'logout';
+          window.location.replace("http://127.0.0.1:5500/login.html")
+        }
+      });
+    }
+  );
 
 //***************************AJOUT DE LA MODALE***************************//
 
-// on récupère les éléments <a>, X et modale //
+// on récupère les éléments <a>, xmark et modale  //
 
-document.addEventListener('DOMContentLoaded', function() {
-const modalOpen = document.querySelector('.modal-open');
-const modalClose = document.querySelector('.modal-close');
-const modal = document.querySelector('#modal2');
+document.addEventListener('DOMContentLoaded', function () {
+  const modalOpen = document.querySelector('.modal-open');
+  const modalClose = document.querySelector('.modal-close');
+  const modal = document.querySelector('#modal-gallery');
+  const modalBackdrop = document.getElementById('modal-backdrop'); // background modal
 
-// empêche la propagation de l'événement de clic
-modal.onclick = function(event) {
-  event.stopPropagation(); 
-}
+  modalOpen.onclick = function () {
+    modal.setAttribute('aria-hidden', 'false');
+    modalBackdrop.style.display = 'block'; // show the background
+    modal.style.display = 'flex'; 
+    getModal(); // on récupère la fonction getModal qui affiche les works
+  }
 
-// Add event onClick to open the modal //
-modalOpen.onclick = function() {
-modal.setAttribute('aria-hidden', 'false');
-modal.style.display ='flex'; // afficher la modale
-}
+  modalClose.onclick = function () {
+    modal.setAttribute('aria-hidden', 'true');
+    modalBackdrop.style.display = 'none'; 
+    modal.style.display = 'none';
+    clearModal(); // on vide l'intérieur de la modal en appelant la fonction clearModal
+  }
 
-
-// Add event onClick to close the modal 
-modalClose.onclick = function() {
-  modal.setAttribute('aria-hidden', 'true'); // Masquer la modale
-  modal.style.display = 'none'; // Masquer la modale en utilisant CSS
-}
-
+  modal.onclick = function (event) {
+    event.stopPropagation();
+  }
 });
+
+// INSER CLOSE MODALE WHEN CLICK OUTSIDE 
 
 
 // récupérer à nouveau les works via l'API //
+function getModal() {
+  fetch('http://localhost:5678/api/works')
+    .then(response => response.json())
+    .then((modal) => {
 
+      modal.forEach((modal) => { 
+        const figure = document.createElement('figure'); 
+        const img = document.createElement('img'); 
+        const figcaption = document.createElement('figcaption');
+        const trashIcon = document.createElement('i');
+        const arrowIcon = document.createElement('i')
 
+        img.src = modal.imageUrl; 
+        img.alt = modal.title; 
+        img.setAttribute('data-img', modal.categoryId); 
+        figcaption.innerText = "éditer"; 
 
+        arrowIcon.className= "fa-solid fa-arrows-up-down-left-right arrow-icon";
+        trashIcon.className = "fa-regular fa-trash-can trash-icon";
+        figure.appendChild(img);
+        figure.appendChild(trashIcon);
+        figure.appendChild(figcaption); 
+        figure.appendChild(arrowIcon);
+
+        document.querySelector('.modal-container').appendChild(figure);
+      });
+    })
+}
+function clearModal() {
+  const modalContainer = document.querySelector('.modal-container');
+  while (modalContainer.firstChild) {
+    modalContainer.removeChild(modalContainer.firstChild);
+  }
+}
