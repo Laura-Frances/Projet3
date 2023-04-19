@@ -101,20 +101,52 @@
 				</div>
 			</aside>
 
-			<!-- MODAL ADD PHOTO -->
-			<!-- <aside id="modal-add" aria-hidden="true" role="dialog">
-				<span class="modal-close"><i class="fa-sharp fa-solid fa-xmark"></i></span>
+			<!-- MODAL ADD PHOTO  -->
+			<aside id="modal-add" aria-hidden="true" role="dialog">
+
 
 				<div class="modal-add-photo">
-
+					<span class="modal-add-return">
+						<i class="fa-regular fa-arrow-left-long"></i>
+					</span>
+					<span class="modal-add-close">
+						<i class="fa-sharp fa-solid fa-xmark"></i>
+					</span>
 					<div class="modal-add-title">Ajout photo</div>
+					<div class="rectangle-add-photo">
+						<div class="icon-add-photo">
+							<i class="fa-sharp fa-regular fa-image"></i>
+						</div>
+						<div class="new-image">
+							<img id="uploaded-image" src="" alt="UploadedImage" style="display: none;">
+						</div>
+						<form>
+							<label for="photo">+ Ajouter photo</label>
+							<input type="file" id="photo" name="photo" style="display: none;">
+						</form>
+						<p class="txt-add-photo">jpg, png : 4mo max</p>
+					</div>
 
-					  <form id="add-project-form">...</form>
+					<!--Menu titre-->
+					<form id="image-form">
+						<label for="title-add-modal">Titre:</label>
+						<input type="text" id="title-add-form" name="title">
+						<br>
 
-					<button id="validate">Valider</button>
-					
+						<!--Menu déroulant catégorie-->
+						<label for="category-add-modal">Catégorie:</label>
+						<select id="category-add-select">
+						</select>
+					</form>
+
+					<div class="line-modal"></div>
+
+					<div class="add-validate">
+						<input type="submit" id="btn-validate" value="Valider" disabled>
+					</div>
+
 				</div>
-			</aside> -->
+			</aside>
 
 			<!-- SORT BY CATEGORY -->
 			<div class="category-buttons hidden">

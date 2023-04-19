@@ -1,10 +1,12 @@
 body {
-	max-width: 1140px;
-	height: 1024px;
+	width: 1440px;
 	margin: auto;
 	font-family: 'Work Sans';
 	font-size: 14px;
 	background-color: #FFFEF8;
+	min-height: 512px;
+	display: flex;
+	flex-direction: column; 
 }
 
 header {
@@ -35,7 +37,7 @@ nav ul {
 	align-items: center;
 	list-style-type: none;
 	text-decoration: none;
-	margin:0;
+	margin: 0;
 }
 
 nav li {
@@ -54,7 +56,8 @@ main {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	flex-grow: 1;
+	max-width: 1440px;
 }
 
 #login-form {
@@ -122,11 +125,12 @@ p {
 }
 
 footer {
-	background-color: #FFFFFF;
+	background-color:#FFFFFF;
 	display: flex;
-	width: 100%;
+	max-width: 100%;
 	height: 60px;
-	margin-top: 960px;
+	margin: 300px 0px 0px 0px;
+	
 }
 
 #link-footer {

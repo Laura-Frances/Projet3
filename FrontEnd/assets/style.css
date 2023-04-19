@@ -163,7 +163,7 @@ section {
 	top: 0;
 	width: 100%;
 	height: 60px;
-	background-color: black;
+	background-color: #000000;
 }
 
 #icon-border {
@@ -304,7 +304,7 @@ li:hover {
 
 .modal,
 .modal-open {
-	color: black;
+	color: #000000;
 	display: inline-block;
 	text-decoration: none;
 }
@@ -330,7 +330,7 @@ li:hover {
 	height: 730px;
 	border-radius: 10px;
 	background: #FFFFFF;
-	Left: 50%;
+	left: 50%;
 	top: 50%;
 }
 
@@ -345,12 +345,14 @@ li:hover {
 	width: 100%;
 }
 
-.modal-close {
+.modal-close,
+.modal-add-close {
 	position: absolute;
 	cursor: pointer;
 	top: 10px;
 	right: 10px;
 	margin: 30px;
+	z-index: 1;
 }
 
 .modal-title {
@@ -358,7 +360,6 @@ li:hover {
 	font-weight: 400;
 	font-size: 26px;
 	margin-top: 50px;
-
 }
 
 .modal-container {
@@ -372,7 +373,7 @@ li:hover {
 	margin: 60px 100px 45px 100px;
 }
 
-/* éléments de la modale */
+/* modal gallery elements */
 .modal-container figure {
 	position: relative;
 	margin: 0;
@@ -383,6 +384,7 @@ li:hover {
 	justify-content: center;
 	overflow: hidden;
 }
+
 figure:hover .arrow-icon {
 	opacity: 1;
 }
@@ -412,7 +414,7 @@ figure:hover .arrow-icon {
 	position: absolute;
 	cursor: pointer;
 	font-family: 'Syne';
-	color: white;
+	color: #FFFFFF;
 	font-size: 14px;
 	width: 237px;
 	height: 36px;
@@ -444,6 +446,7 @@ figure:hover .arrow-icon {
 	z-index: 1;
 	cursor: pointer;
 }
+
 .arrow-icon {
 	position: absolute;
 	color: #FFFFFF;
@@ -456,6 +459,145 @@ figure:hover .arrow-icon {
 	z-index: 1;
 	cursor: pointer;
 	opacity: 0;
+}
+
+/* add photos modal */
+#modal-add {
+	display: none;
+	position: fixed;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	width: 630px;
+	transform: translate(-50%, -50%);
+	height: 730px;
+	border-radius: 10px;
+	background: #FFFFFF;
+	left: 50%;
+	top: 50%;
+}
+
+.modal-add-photo {
+	background-color: #FFFFFF;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	border-radius: 10px;
+	height: 100%;
+	width: 100%;
+}
+
+#modal-backdrop {
+	display: none;
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-add-title {
+	margin-top: 60px;
+	font-family: 'Work Sans';
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 30px;
+}
+
+.rectangle-add-photo {
+	width: 420px;
+	height: 170px;
+	margin-top: 35px;
+	background-color: #E8F1F7;
+	border-radius: 3px;
+}
+
+.modal-add-return {
+	position: absolute;
+	cursor: pointer;
+	top: 10px;
+	left: 10px;
+	margin: 30px;
+	z-index: 1;
+}
+
+.icon-add-photo i {
+	color: #B9C5CC;
+	font-size: 60px;
+	margin: 20px 0px 20px 0px;
+}
+
+label[for="photo"] {
+	display: inline-block;
+	text-align: center;
+	font-size: 15px;
+	width: 170px;
+	height: 35px;
+	color: #306685;
+	background-color: #CBD6DC;
+	border-radius: 50px;
+	cursor: pointer;
+	line-height: 35px;
+}
+
+.txt-add-photo {
+	font-size: 10px;
+	margin-top: 7px;
+}
+
+label[for="title-add-modal"], 
+label[for="category-add-modal"] {
+	display:flex;
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+#title-add-form, #category-add-select {
+	width: 420px;
+	height: 51px;
+	background-color: #FFFFFF;
+	border: 1px;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.add-validate {
+	position: relative;
+	width: 237px;
+	height: 36px;
+	top: 100px;
+}
+
+#btn-validate {
+	font-family: 'Syne';
+	color: #FFFFFF;
+	background-color: #1D6154;;
+	font-size: 14px;
+	width: 237px;
+	height: 36px;
+	border: 1px solid #A7A7A7;
+	border-radius: 60px ;
+	cursor: pointer;
+}
+
+#btn-validate[disabled] {
+	background-color: #a7a7a7;
+}
+#btn-validate[disabled]:hover {
+	background-color: #a7a7a7;
+}
+
+.new-image {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#uploaded-image {
+	width: 129px;
+	height: 170px;
 }
 
 /* back de la modale */
@@ -502,11 +644,9 @@ button:hover {
 
 .hidden {
 	display: none;
-	/* propriété pour rendre l'élément invisible */
 }
 
 /* END OF SORT */
-
 .gallery img {
 	width: 100%;
 }
