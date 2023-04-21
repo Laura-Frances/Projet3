@@ -307,6 +307,7 @@ li:hover {
 	color: #000000;
 	display: inline-block;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .gallery {
@@ -573,7 +574,7 @@ label[for="category-add-modal"] {
 #btn-validate {
 	font-family: 'Syne';
 	color: #FFFFFF;
-	background-color: #1D6154;;
+	background-color: #A7A7A7;
 	font-size: 14px;
 	width: 237px;
 	height: 36px;
@@ -581,12 +582,8 @@ label[for="category-add-modal"] {
 	border-radius: 60px ;
 	cursor: pointer;
 }
-
-#btn-validate[disabled] {
-	background-color: #a7a7a7;
-}
-#btn-validate[disabled]:hover {
-	background-color: #a7a7a7;
+#btn-validate.green {
+	background-color: #1D6154;
 }
 
 .new-image {

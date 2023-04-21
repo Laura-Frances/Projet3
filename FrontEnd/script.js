@@ -11,22 +11,32 @@ function getWorks() {
     .then(response => response.json())
     .then((works) => {
 
+      const gallery = document.querySelector('.gallery');
+      while (gallery.firstChild) {
+        gallery.removeChild(gallery.firstChild); // remove all children of the gallery element
+      }
+
       works.forEach((work) => {
-        const figure = document.createElement('figure'); //...on récupère la figure
-        const img = document.createElement('img'); // puis l'image
-        const figcaption = document.createElement('figcaption'); // puis l'élément de légende.
-
-        img.src = work.imageUrl; //la propriété src de l'image obtient son url pour chaque objet (work)
-        img.alt = work.title; //la propriété alt donne un titre pour chaque objet (work)
-        img.setAttribute('data-category', work.categoryId); // on ajoute l'attribut data-category à l'élément 'img' ayant pour valeur l'id de la catégorie work
-        figcaption.innerText = work.title; //la propriété innerText donne un contenu textuel visible à chaque work, extraite de la propriété 'title'
-
-        figure.appendChild(img); // 'img' est ajouté à l'élément 'figure'
-        figure.appendChild(figcaption); // 'figcaption' est ajouté à l'élément 'figure'
-
-        document.querySelector('.gallery').appendChild(figure);// on sélectionne la galerie du html, et on y ajoute l'élement figure
+        addNewWork(work.title, work.imageUrl, work.categoryId);
       });
     })
+}
+
+function addNewWork(title, imageUrl, categoryId) {
+  const figure = document.createElement('figure'); //...on récupère la figure
+  const img = document.createElement('img'); // puis l'image
+  const figcaption = document.createElement('figcaption'); // puis l'élément de légende.
+
+  img.src = imageUrl; //la propriété src de l'image obtient son url pour chaque objet (work)
+  img.alt = title; //la propriété alt donne un titre pour chaque objet (work)
+  img.setAttribute('data-category', categoryId); // on ajoute l'attribut data-category à l'élément 'img' ayant pour valeur l'id de la catégorie work
+  figcaption.innerText = title; //la propriété innerText donne un contenu textuel visible à chaque work, extraite de la propriété 'title'
+
+  figure.appendChild(img); // 'img' est ajouté à l'élément 'figure'
+  figure.appendChild(figcaption); // 'figcaption' est ajouté à l'élément 'figure'
+
+  document.querySelector('.gallery').appendChild(figure);// on sélectionne la galerie du html, et on y ajoute l'élement figure
+
 }
 
 //***************************CATEGORY PART***************************//
@@ -113,8 +123,7 @@ let myToken = null; // defined with a default value
 document.addEventListener
   (
     "DOMContentLoaded", // DOMContentLoaded triggered when html page loaded
-    function () 
-    {
+    function () {
       const loginButton = document.getElementById('loginButton');
       getToken();
 
@@ -137,8 +146,7 @@ document.addEventListener
           .querySelectorAll('.hidden')
           .forEach
           (
-            element => 
-            {
+            element => {
               element.classList.add('hidden');
             }
           )
@@ -146,23 +154,24 @@ document.addEventListener
       }
 
       // click event added to button to manage user login/logout
-      loginButton.addEventListener('click', () => 
-      {
-        if (myToken) 
-        {
-          localStorage
-            .removeItem('token');
-          loginButton.textContent = 'login';
-          window.location.href = "index.html"
+      loginButton.addEventListener('click', () => {
+        if (myToken) {
+          logout()
         }
-        else 
-        {
+        else {
           loginButton.textContent = 'logout';
           window.location.replace("login.html")
         }
       });
     }
   );
+
+  function logout(){
+    const loginButton = document.getElementById('loginButton');
+    localStorage.removeItem('token');
+    loginButton.textContent = 'login';
+    window.location.href = "index.html"
+  }
 
 //***************************GALLERY MODALE***************************//
 
@@ -193,26 +202,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
-
 // GET THE WORKS AGAIN FROM API  //
-function getModal() 
-{
+function getModal() {
   fetch('http://localhost:5678/api/works')
     .then(response => response.json())
-    .then((modal) => {
+    .then((works) => {
 
-      modal.forEach((modal) => 
-      {
+      works.forEach((work) => {
         const figure = document.createElement('figure');
         const img = document.createElement('img');
         const figcaption = document.createElement('figcaption');
         const trashIcon = document.createElement('i');
         const arrowIcon = document.createElement('i')
 
-        img.src = modal.imageUrl;
-        img.alt = modal.title;
-        img.setAttribute('data-img', modal.categoryId);
+        img.src = work.imageUrl;
+        img.alt = work.title;
+        img.setAttribute('data-img', work.categoryId);
         figcaption.innerText = "éditer";
 
         arrowIcon.className = "fa-solid fa-arrows-up-down-left-right arrow-icon";
@@ -223,8 +228,8 @@ function getModal()
         figure.appendChild(figcaption);
         figure.appendChild(arrowIcon);
 
-        trashIcon.addEventListener('click', () => {
-          deleteImage(modal.id, figure); //call function deleteImage
+        trashIcon.addEventListener('click', (event) => {
+          deleteImage(event, work.id, figure); //call function deleteImage
         });
 
         document.querySelector('.modal-container').appendChild(figure);
@@ -234,28 +239,27 @@ function getModal()
 
 // DELETE ITEM
 
-function deleteImage(id, figure) //delete request to the server to delete the img with a specified id and figure
+function deleteImage(event, id, figure) //delete request to the server to delete the img with a specified id and figure
 {
+  event.preventDefault();
 
-  fetch('http://localhost:5678/api/works/${id}',
+  fetch(`http://localhost:5678/api/works/${id}`,
     {
       method: 'DELETE',
       headers:
       {
-        'Authorization': 'Bearer ' + myToken,
+        'Authorization': `Bearer ${myToken}`
       }
     })
-    // .then(data => data.json)
-    // .then(jsondata => {
-    //   console.log(jsondata.work);
-    // })
-    .then(response => {
-      // alert('id = ' + id + ' , response = ' + response.status)
 
+    .then(response => {
       if (response.ok) {
-        alert('suppression');
-        figure.remove(); // remove image from DOM
-      }
+          figure.remove();
+          getWorks();
+          
+        }
+        // remove image from DOM
+
     });
 }
 
@@ -264,18 +268,18 @@ function clearModal() // empty the modal
   const modalContainer = document.querySelector('.modal-container');
   while (modalContainer.firstChild) {
     modalContainer.removeChild(modalContainer.firstChild); // remove all children of the modalContainer element
-    window.location.href = ('/index.html'); // Redirects to homepage
   }
 }
 
 //***************************MODAL ADD PHOTO***************************//
-
+// show add modal
 document.addEventListener('DOMContentLoaded', function () {
   const addModal = document.querySelector('#modal-add');
   const modalAddReturn = document.querySelector('.modal-add-return');
   const modalBackdrop = document.querySelector('#modal-backdrop');
   const btnAddPhoto = document.getElementById('btn-add-photo');
   const modalAddClose = document.querySelector('.modal-add-close .fa-xmark');
+  const modal = document.querySelector('#modal-gallery');
 
   btnAddPhoto.addEventListener('click', function () {
     addModal.setAttribute('aria-hidden', 'false');
@@ -289,32 +293,45 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   modalAddClose.addEventListener('click', function () {
-    addModal.setAttribute('aria-hidden', 'true');
-    modalBackdrop.style.display = 'none';
-    addModal.style.display = 'none';
-    clearModal(); // call the function clearModal
-    clearAddModal(); // call the function clearAddModal to clear the second modal
+    closeModals();
   });
 });
 
-function clearAddModal() // clear the add modal
-{
-  const modalAddContainer = document.querySelector('.modal-add-photo');
-  while (modalAddContainer.firstChild) 
-  {
-    modalAddContainer.removeChild(modalAddContainer.firstChild);
-  }
+function closeModals(){
 
-  const modalContainer = document.querySelector('.modal-container');
-  while (modalContainer.firstChild) 
-  {
-    modalContainer.removeChild(modalContainer.firstChild);
-  }
-  window.location.href = ('index.html');
+  const addModal = document.querySelector('#modal-add');
+  const modalBackdrop = document.querySelector('#modal-backdrop');
+  const modal = document.querySelector('#modal-gallery');
+
+  addModal.setAttribute('aria-hidden', 'true');
+  modal.style.display = 'none';
+  modalBackdrop.style.display = 'none';
+  addModal.style.display = 'none';
+  clearModal(); // call the function clearModal
+  clearAddModal(); // call the function clearAddModal to clear the second modal
+}
+
+// clear the add modal
+function clearAddModal() {
+  document.getElementById('title-add-form').value = "" ;
+  document.getElementById('category-add-select').selectedIndex = 0;
+
+  let uploadedImage = document.getElementById('uploaded-image');
+  
+  uploadedImage.src = null
+  uploadedImage.style.display = 'none';
+
+  document.querySelector('.icon-add-photo .fa-image').style.display = 'block';
+  document.querySelector('label[for="photo"]').style.display = 'inline-block';
+  document.querySelector('.txt-add-photo').style.display = 'block';
+
+  const btnValidate = document.getElementById('btn-validate');
+
+  btnValidate.classList.remove('green');
+  btnValidate.disabled = true
 }
 
 // send a new image to the back-end
-
 document.addEventListener('DOMContentLoaded', function () 
 {
   let selectedFile;
@@ -332,27 +349,41 @@ document.addEventListener('DOMContentLoaded', function ()
     checkFields()
   });
 
-  
+  document.getElementById("category-add-select").addEventListener('change', function(){
+    checkFields();
+  });
+
+  document.getElementById('title-add-form').addEventListener('input', function(){
+    checkFields();
+  });
+
+
   function checkFields() {
     const checkTitle = document.getElementById('title-add-form').value;
     const checkCategory = document.getElementById('category-add-select').value;
     const uploadedImageSrc = document.getElementById('uploaded-image').src;
     const btnValidate = document.getElementById('btn-validate'); // Ajout de cette ligne pour obtenir l'élément du DOM avec l'ID "btn-validate"
-  
+
     // Vérifie si les champs titre, catégorie et uploadedImage sont remplis
     if (checkTitle !== '' && checkCategory !== '' && uploadedImageSrc !== '') {
-      btnValidate.disabled = false; 
+      btnValidate.classList.add('green');
+      btnValidate.disabled = false
     } else {
-      btnValidate.disabled = true; 
+      btnValidate.classList.remove('green');
+      btnValidate.disabled = true
     }
   }
-
+  
   document.getElementById('btn-validate').addEventListener('click', function () 
   {
+    const title = document.getElementById('title-add-form').value;
+    const categoryId = document.getElementById('category-add-select').value;
+    const imageUrl = URL.createObjectURL(selectedFile);
+    
     let formData = new FormData();
     formData.append('image', selectedFile); // Ajoute le fichier à l'objet FormData
-    formData.append('title', document.getElementById('title-add-form').value); // Ajoute la valeur du champ de titre au FormData
-    formData.append('category', document.getElementById('category-add-select').value); // Ajoute la valeur du champ de catégorie au FormData
+    formData.append('title', title); // Ajoute la valeur du champ de titre au FormData
+    formData.append('category', categoryId); // Ajoute la valeur du champ de catégorie au FormData
 
     fetch('http://localhost:5678/api/works',
       {
@@ -365,12 +396,21 @@ document.addEventListener('DOMContentLoaded', function ()
       })
       .then(function (response) {
         console.log('Response:', response);
-        alert('image ajoutée');
+        if (response.ok) {
+          addNewWork(title, imageUrl, categoryId);
+          alert("Votre projet a bien été ajouté");
+          closeModals()
+        }else{
+          if (response.status == 401){
+              logout();
+          }
+          alert("Une erreur est survenue : " + response.statusText );
+        }
       })
       .catch(function (error) {
         console.error('Error:', error);
       });
   });
 
+  
 });
-
