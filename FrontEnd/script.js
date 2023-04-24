@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let myToken = null; // defined with a default value
   let selectedFile = undefined;
-    // #region constantes
+  // #region constantes
   const uploadedImage = document.getElementById('uploaded-image');
   const loginButton = document.getElementById('loginButton');
   const modalOpen = document.querySelector('.modal-open');
@@ -21,116 +21,97 @@ document.addEventListener("DOMContentLoaded", function () {
   getCategories();
   getWorks();
   getToken();
-
-  if (myToken != null) { // if the token is not null
-    loginButton.textContent = 'logout';
-    document
-      .querySelectorAll('.hidden') // we select the .hidden class
-      .forEach
-      (
-        element => // for each element we remove the hidden element
-        {
-          element.classList.remove('hidden');
-        }
-      )
-    document.querySelector('.category-buttons').classList.add('hidden');
-  }
-  else { // otherwise the elements remain hidden and the 'login' appears
-    loginButton.textContent = 'login';
-    document
-      .querySelectorAll('.hidden')
-      .forEach
-      (
-        element => {
-          element.classList.add('hidden');
-        }
-      )
-    document.querySelector('.category-buttons').classList.remove('hidden');
-  }
+  getInterface();
 
   //***************************WORKS PART***************************//
-  // #region works
+  // #region WORKS
+
   // get the works from API
   function getWorks() {
     fetch('http://localhost:5678/api/works')
-      .then(response => response.json())
-      .then((works) => {
+      .then(response => response.json()) // processes the request response by transforming it into JSON format
+      .then((works) => { //get json datas stored inside "works" constante
 
         const gallery = document.querySelector('.gallery');
         while (gallery.firstChild) {
-          gallery.removeChild(gallery.firstChild); // remove all children of the gallery element
+          gallery.removeChild(gallery.firstChild); // remove all children of the gallery element to prepare the gallery adding works from API
         }
 
-        works.forEach((work) => {
-          addNewWork(work.title, work.imageUrl, work.categoryId);
+        works.forEach((work) => { // on each work we call the function addNewWork with 3 proprieties ...
+          addNewWork(work.title, work.imageUrl, work.categoryId); //...allows new works from the API to be added to the gallery
         });
       })
   }
 
   function addNewWork(title, imageUrl, categoryId) {
-    const figure = document.createElement('figure'); //...on récupère la figure
-    const img = document.createElement('img'); // puis l'image
-    const figcaption = document.createElement('figcaption'); // puis l'élément de légende.
+    const figure = document.createElement('figure'); //...get the figure
+    const img = document.createElement('img'); // and the image
+    const figcaption = document.createElement('figcaption'); // and the caption of the image
 
-    img.src = imageUrl; //la propriété src de l'image obtient son url pour chaque objet (work)
-    img.alt = title; //la propriété alt donne un titre pour chaque objet (work)
-    img.setAttribute('data-category', categoryId); // on ajoute l'attribut data-category à l'élément 'img' ayant pour valeur l'id de la catégorie work
-    figcaption.innerText = title; //la propriété innerText donne un contenu textuel visible à chaque work, extraite de la propriété 'title'
+    img.src = imageUrl; // sets the src attribute of the img to the imageUrl
+    img.alt = title; // sets the alt attribute of the img to the title
+    img.setAttribute('data-category', categoryId); // sets an attribute data-category on img, assigns the value of categoryId
+    figcaption.innerText = title; // sets the inner text content of figcaption to the value of the title
 
-    figure.appendChild(img); // 'img' est ajouté à l'élément 'figure'
-    figure.appendChild(figcaption); // 'figcaption' est ajouté à l'élément 'figure'
+    figure.appendChild(img); // add the element img as a child of the figure
+    figure.appendChild(figcaption); // add the element figcaption as a child of the figure
 
-    document.querySelector('.gallery').appendChild(figure);// on sélectionne la galerie du html, et on y ajoute l'élement figure
-
+    document.querySelector('.gallery').appendChild(figure); // add figure as a child of gallery
   }
   // #endregion works
 
   //***************************CATEGORY PART***************************//
+  // #region category
 
-  // Récupération des catégories via l'API
+  // get categories from API
   function getCategories() {
     fetch('http://localhost:5678/api/categories')
       .then(response => response.json())
       .then((categories) => {
 
-        const divCategory = document.querySelector(".category-buttons"); // on récupére la div des boutons pour le tri par catégorie
-        const btnAll = document.createElement("button");  // on créé la variable pour le bouton ''Tous''
-        const selectCategory = document.getElementById('category-add-select'); // on récupère la div category-add-select pour le menu déroulant de la modale add
+        const divCategory = document.querySelector(".category-buttons");
+        const btnAll = document.createElement("button");
+        const selectCategory = document.getElementById('category-add-select'); // we get the 'category-add-select' for the scorlling menu of the addModal
 
-        btnAll.innerHTML = "Tous"; // on créé le texte du bouton "Tous"
-        btnAll.setAttribute('data-category', 0); // on ajoute l'attribut data-category à l'élément 'btnAll' et on lui ajoute la valeur 0.
-        divCategory.appendChild(btnAll); // 'btnAll' est ajouté à l'élément divCategory
+        btnAll.innerHTML = "Tous"; // we create the "all" button 
+        btnAll.setAttribute('data-category', 0); // we set the attribute data-categopry to the btnAll and set the 0 value
+        divCategory.appendChild(btnAll); // btnAll is a child of divCategory element
 
-        categories.forEach((category) => { // on crée les boutons pour chaque catégorie
+        categories.forEach((category) => { // we create all the category buttons
 
-          const btn = document.createElement("button"); // on récupère les boutons pour le tri
+          const btn = document.createElement("button"); // we get the buttons
 
-          btn.innerHTML = category.name; // la propriété innerHTML du btn donne un contenu textuel au bouton pour chaque catégorie
-          btn.setAttribute('data-category', category.id), // on donne l'attribut data-category à l'élément 'btn' et on lui donne la valeur correspondant à l'id de la catégorie
-            btn.name = category.name; // la propriété 'name' du btn obtient un nom pour chaque catégorie
+          btn.innerHTML = category.name; // give some txt to the btn for each category
+          btn.setAttribute('data-category', category.id), // set the data-category to the 'btn', and give the id value of the category
+            btn.name = category.name; // give a name to each category buttons
 
-          divCategory.appendChild(btn); // 'btn' est ajouté à l'élément divCategory
+          divCategory.appendChild(btn); // btn is a child of the element parent divCategory
 
-          const option = document.createElement('option');
-          option.value = category.id;
-          option.text = category.name;
+          // get categories for the scrolling menu inside the addModal
+          const option = document.createElement('option'); // create the element option for the scrolling menu
+          option.value = category.id; // set the id category for the value of the scrolling options
+          option.text = category.name; // give a category name for the txt of each option inside the scrolling menu
 
-          selectCategory.appendChild(option);
+          selectCategory.appendChild(option); // option is a child of the element selectCategory
         });
-        setUpSorting()
+        setUpSorting() // call the function setUpSorting
       });
   }
 
-  //***************************SORTING FUNCTION***************************//
+  //***************************SORTING FUNCTIONS***************************//
+  // #region sorting
 
   function setUpSorting() {
 
-    const categoryButtons = document.querySelectorAll('.category-buttons button');   // on récupère les boutons de la "category-buttons"
+    const categoryButtons = document.querySelectorAll('.category-buttons button');
+    
 
-    categoryButtons.forEach(button => { // pour chaque bouton...
-      button.addEventListener('click', () => {
-        const categoryId = button.getAttribute('data-category');//...qui récupère l'id de catégorie associé au bouton
-        filterImages(categoryId); // on appelle la fonction filterImages avec l'Id de catégorie, pour filtrer la liste d'images en fonction ed la catégorie sélectionnée
+    categoryButtons.forEach(button => { //...for each button
+
+      const categoryId = button.getAttribute('data-category');
+     
+      button.addEventListener('click', () => { //...we listen the click
+        filterImages(categoryId); // ...and we call the function filterImages with id category, to filter the images depends on a category
       });
     });
   }
@@ -138,53 +119,73 @@ document.addEventListener("DOMContentLoaded", function () {
   // CATEGORY & SET OBJECT
 
   function filterImages(categoryId) {
-    const works = document.querySelectorAll('.gallery figure');
-    const categories = new Set();  // on stocke les catégories d'image sans doublons
+    const works = document.querySelectorAll('.gallery figure'); // get all the elements figure inside the element .gallery
+    const categories = new Set();  // create a new object Set to store the img categories without duplicates
 
-    works.forEach(work => { // pour chaque work...
-      const workCategory = work.querySelector('img').getAttribute('data-category'); //...on séléctioonne l'img pour lui donner l'attribut data-category
+    works.forEach(work => { // for each work...
+      const workCategory = work.querySelector('img').getAttribute('data-category'); //...we get the img to give the value of the attribute 'data-category'
 
-      categories.add(workCategory); // garantit que chaque catégorie d'image ne sera ajoutée à l'ensemble qu'une seule fois
+      categories.add(workCategory); // add 'workCategory' to the categories. Each category will be add once
 
-      if (categoryId === '0' || workCategory === categoryId) { // on vérifie si la catégorie sélectionnée est 0 (tous) ou si la catégorie correspond à une catégorie de travail
-        work.style.display = ''; //...si c'est le cas, alors l'élément s'affiche en utilisant display block
+      if (categoryId === '0' || workCategory === categoryId) { // we check if the value of categoryId is 0 ("tous") or if workCategory has an id
+        work.style.display = ''; //...if yes, so 'work' (the img) is displayed block
       }
       else {
-        work.style.display = 'none'; // ...si ce n'est pas le cas alors les works se masquent en utilisant la valeur none
+        work.style.display = 'none'; //...if no, so 'work' (the img) is hide
       }
     });
     console.log(categories);
   }
+  // #endregion
 
   //***************************INTERFACE LOGIN/LOGOUT***************************//
+  // #region LOGIN/LOGOUT
 
-  // on stock le token dans le localStorage
+  // get the interface login or logout with the token
+  function getInterface() {
+    if (myToken != null) { // if the token is not null
+      loginButton.textContent = 'logout';
+      document.querySelectorAll('.hidden').forEach(element => {
+        element.classList.remove('hidden');
+      })
+      document.querySelector('.category-buttons').classList.add('hidden');
+    } else { // otherwise the elements remain hidden and the 'login' appears
+      loginButton.textContent = 'login';
+      document.querySelectorAll('.hidden').forEach(element => {
+        element.classList.add('hidden');
+      }
+      )
+      document.querySelector('.category-buttons').classList.remove('hidden');
+    }
+  }
+
+  // we get the token inside the localStorage
   function getToken() {
     myToken = localStorage.getItem('token')
     console.log(myToken)
   }
 
-
   // click event added to button to manage user login/logout
   loginButton.addEventListener('click', () => {
     if (myToken) {
       logout()
-    }
-    else {
+    } else {
       loginButton.textContent = 'logout';
       window.location.replace("login.html")
     }
   });
 
-
+  // remove the token to logout
   function logout() {
     const loginButton = document.getElementById('loginButton');
     localStorage.removeItem('token');
     loginButton.textContent = 'login';
     window.location.href = "index.html"
   }
+  // #endregion
 
   //***************************GALLERY MODALE***************************//
+  // #region first modal
 
   // get the elements <a>, xmark and modal  //
   modalOpen.onclick = function () {
@@ -202,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
     clearAddModal();
   }
 
-  // CLOSE MODALE WHEN CLICK OUTSIDE here ...
+  // CLOSE MODALE WHEN CLICK OUTSIDE 
   modalBackdrop.addEventListener('click', function () {
     closeModals();
   })
@@ -243,7 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // DELETE ITEM
-
   function deleteImage(event, id, figure) {
     event.preventDefault();
 
@@ -274,9 +274,10 @@ document.addEventListener("DOMContentLoaded", function () {
       modalContainer.removeChild(modalContainer.firstChild); // remove all children of the modalContainer element
     }
   }
+  // #endregion
 
   //***************************MODAL ADD PHOTO***************************//
-
+  // #region second modal
   btnAddPhoto.addEventListener('click', function () {
     addModal.setAttribute('aria-hidden', 'false');
     modalBackdrop.style.display = 'block'; // show the background
@@ -404,5 +405,6 @@ document.addEventListener("DOMContentLoaded", function () {
       errorMsgForm.style.display = 'flex';
     }
   });
+  // #endregion
 });
 

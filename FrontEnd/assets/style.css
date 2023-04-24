@@ -415,11 +415,10 @@ figure:hover .arrow-icon {
 
 #error-message {
 	color: #FF0000;
-	padding-top: 20px;
 }
+
 #success-message {
 	color: #008000;
-	padding-top: 20px;
 }
 
 #btn-add-photo {
@@ -581,6 +580,7 @@ label[for="category-add-modal"] {
 	border: 1px solid #A7A7A7;
 	border-radius: 60px ;
 	cursor: pointer;
+	margin : 0px;
 }
 #btn-validate.green {
 	background-color: #1D6154;

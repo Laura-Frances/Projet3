@@ -1,6 +1,6 @@
 // SET THE TOKEN FOR USER CONNECTION //
 
-// we create the variables
+// the constantes
 const apiUrl = 'http://localhost:5678/api/users/login';
 const loginForm = document.querySelector('#login-form');
 const emailInput = document.querySelector('#email');
